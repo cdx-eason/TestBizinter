@@ -23,6 +23,9 @@ class BizinterClass():
         self.threads = int(ConfigBinzinter.getconfig('threads'))
         self.interval = int(ConfigBinzinter.getconfig('interval_sec'))
 
+        # get VM IP
+        self.vmip = ConfigBinzinter.getconfig('vmip')
+
     # def getprobetype(self):
     #     probetype = ConfigBinzinter.getconfig('probetype').split(",")
     #     return probetype
@@ -43,7 +46,12 @@ class BizinterClass():
 
     def hitudp(self):
         self.createdata()
-        cmd = "cat zinterdata | sudo nc -w 30 -U /var/run/cdx-newzinter/interconnect.skt"
+        global connectstr
+        if self.vmip != '':
+            connectstr = 'ssh root@%s cedexis.nc' % self.vmip
+        else:
+            connectstr = 'sudo nc -w 30 -U /var/run/cdx-newzinter/interconnect.skt'
+        cmd = 'cat zinterdata | %s' % connectstr
         p = subprocess.Popen(cmd, shell=True, stderr=subprocess.PIPE)
         while True:
             out = p.stderr.read(1)
@@ -85,6 +93,8 @@ class BizinterClass():
     def createdatafile(self):
         open('zinterdata', 'w').close()
         with open('zinterdata', 'a') as zdata:
+            if self.vmip != '':
+                zdata.write('Ok\n')
             for item in self.traceon:
                 # print item
                 zdata.write(item + '\n')
