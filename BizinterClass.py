@@ -10,16 +10,26 @@ class BizinterClass():
         self.mastertraceon = list()
         self.traceon = list()
         self.xrext = list()
-        self.probetype = self.getprobetype()
+        self.probetype = self.getlistfromconfig('probetype')
+        self.mktnbr = self.getlistfromconfig('market')
+        self.ctrynbr = self.getlistfromconfig('country')
+        self.regionnbr = self.getlistfromconfig('region')
+        self.statenbr = self.getlistfromconfig('state')
+        self.asnnbr = self.getlistfromconfig('asn')
+
         # print self.probetype
         self.totalhits = int(ConfigBinzinter.getconfig('total_hits'))
         self.batches = int(ConfigBinzinter.getconfig('batches'))
         self.threads = int(ConfigBinzinter.getconfig('threads'))
         self.interval = int(ConfigBinzinter.getconfig('interval_sec'))
 
-    def getprobetype(self):
-        probetype = ConfigBinzinter.getconfig('probetype').split(",")
-        return probetype
+    # def getprobetype(self):
+    #     probetype = ConfigBinzinter.getconfig('probetype').split(",")
+    #     return probetype
+
+    def getlistfromconfig(self, param):
+        list = ConfigBinzinter.getconfig(param).split(",")
+        return list
 
     def hitbizinter(self):
         print 'batch 1'
@@ -45,11 +55,11 @@ class BizinterClass():
         self.xrext = list()
 
         for i in range(0, self.totalhits):
-            mkt_nbr = 1
-            ctry_nbr = 1
-            region_nbr = 1
-            state_nbr = 1
-            asn_nbr = random.randint(1, 10)
+            mkt_nbr = random.choice(self.mktnbr)
+            ctry_nbr = random.choice(self.ctrynbr)
+            region_nbr = random.choice(self.regionnbr)
+            state_nbr = random.choice(self.statenbr)
+            asn_nbr = random.choice(self.asnnbr)
             zone_nbr = 1
             cust_nbr = 1
             p_type = 0
