@@ -61,6 +61,7 @@ class BizinterClass():
     def createdata(self):
         self.traceon = list()
         self.xrext = list()
+        istrace = int(ConfigBinzinter.getconfig('enabletrace'))
 
         for i in range(0, self.totalhits):
             mkt_nbr = random.choice(self.mktnbr)
@@ -78,15 +79,16 @@ class BizinterClass():
             cnt_nbr = 1
             tot_nbr = 1
 
-            trace_on = 'trace.on %s %s %s %s %s %s' % (p_prov, p_type, mkt_nbr, ctry_nbr, region_nbr, asn_nbr)
             xr_ext = 'xr_ext %s %s %s %s %s %s %s %s %s %s %s %s %s' % (
             mkt_nbr, ctry_nbr, region_nbr, state_nbr, asn_nbr, zone_nbr, cust_nbr, p_type, p_zone, p_cust, p_prov,
             cnt_nbr, tot_nbr)
 
-            if trace_on not in self.mastertraceon:
-                if trace_on not in self.traceon:
-                    self.mastertraceon.append(trace_on)
-                    self.traceon.append(trace_on)
+            if ( istrace == 1 ):
+                trace_on = 'trace.on %s %s %s %s %s %s' % (p_prov, p_type, mkt_nbr, ctry_nbr, region_nbr, asn_nbr)
+                if trace_on not in self.mastertraceon:
+                    if trace_on not in self.traceon:
+                        self.mastertraceon.append(trace_on)
+                        self.traceon.append(trace_on)
             self.xrext.append(xr_ext)
         self.createdatafile()
 
